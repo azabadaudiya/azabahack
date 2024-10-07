@@ -1,0 +1,71 @@
+import java.util.Scanner;
+
+public class Practical4 
+{
+    public static String encryptData(String plainText, String keyword) 
+    {
+        StringBuilder encryptedText = new StringBuilder();
+        for (int i=0, j=0; i<plainText.length(); ++i) 
+        {
+            char encryptedChar = (char)(((plainText.charAt(i)+keyword.charAt(j)-2*'A')%26)+'A');
+            encryptedText.append(encryptedChar);
+            j = (j+1) % keyword.length();
+        }
+        return encryptedText.toString();
+    }
+
+    public static String decryptData(String cipherText, String keyword) 
+    {
+        StringBuilder decryptedText = new StringBuilder();    
+        for (int i=0, j=0; i<cipherText.length(); ++i) 
+        {
+            char decryptedChar = (char) (((cipherText.charAt(i)-keyword.charAt(j)+26)%26)+'A');
+            decryptedText.append(decryptedChar);
+            j = (j+1) % keyword.length();
+        }
+        return decryptedText.toString();
+    }
+
+    public static void main(String[] args)   
+    {
+        int choice;
+        String plainText, cipherText, keyword;
+        Scanner sc = new Scanner(System.in);
+        do
+        {         
+            System.out.println("\n\n**********VIGENERE CIPHER ALGORITHM IMPLEMENTATION**********");  
+            System.out.println("============================================================");
+            System.out.println("1. Encrypt a text");
+            System.out.println("2. Decrypt a text");   
+            System.out.println("0. Exit \n");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice)
+            {
+                case 1: 
+                    System.out.print("Enter plain text: ");
+                    plainText = sc.nextLine().replaceAll("[^a-zA-Z]", "").toUpperCase();
+                    System.out.print("Enter keyword: ");
+                    keyword = sc.nextLine().replaceAll("[^a-zA-Z]", "").toUpperCase();
+                    cipherText = encryptData(plainText, keyword);
+                    System.out.println("Cipher text: " + cipherText);
+                    break;
+                case 2:
+                    System.out.print("Enter cipher text: ");
+                    cipherText = sc.nextLine().replaceAll("[^a-zA-Z]", "").toUpperCase();
+                    System.out.print("Enter keyword: ");
+                    keyword = sc.nextLine().replaceAll("[^a-zA-Z]", "").toUpperCase();
+                    plainText = decryptData(cipherText, keyword);
+                    System.out.println("Plain text: " + plainText);
+                    break;
+                case 0:
+                    System.out.println("\n\n");
+                    break;
+                default:
+                    System.out.println("INVALID CHOICE");
+            }
+        } while (choice!=0);
+        sc.close();
+    }
+}
